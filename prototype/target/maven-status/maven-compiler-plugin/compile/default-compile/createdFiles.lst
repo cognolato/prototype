@@ -1,0 +1,9 @@
+it\prototype\entity\Utente.class
+it\prototype\dao\UfficioDaoImpl.class
+it\prototype\beans\utentiBean.class
+it\prototype\dao\UtenteDaoImpl.class
+it\prototype\dao\ApplicazioneDaoImpl.class
+it\prototype\beans\utenteBean.class
+it\prototype\entity\Ufficio.class
+it\prototype\entity\Dettaglioutente.class
+it\prototype\entity\Applicazione.class

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+        <title>Gestione utenti</title>
+    </h:head>
+    <h:body>
+        <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Gestione utenti" style="width: 800px;"> 
+                <p:dataTable value="#{utenti.utentiList}" var="o"  widgetVar="50" style="width: 760px;" editable="true">
+                    <f:facet name="header">  
+                        Lista utenti  
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{utenti.onEdit}" update=":form1:messages" />  
+                    <p:ajax event="rowEditCancel" listener="#{utenti.onCancel}" update=":form1:messages" /> 
+                   <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Nome utente" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.nome}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.nome}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>
+ 
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Ruolo" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.ruolo}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.ruolo}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>
+                     <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Data di nascita" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.data}" >  
+                                <f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="Europe/Berlin" />
+                                </h:outputText>
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.data}" style="width:100%"> 
+                                  <f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="Europe/Berlin" />
+                                </p:inputText>
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>  
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Via" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.via}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.via}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column> 
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Città" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.citta}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.citta}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Telefono" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.telefono}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.telefono}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>                           
+                    <p:column headerText="Gest" style="width:50px">  
+                        <p:rowEditor />  
+                                        
+                        <h:commandLink  styleClass="ui-icon ui-icon-trash" action="#{utenti.delete(o)}"/>
+                    </p:column> 
+                </p:dataTable>
+                <p:spacer height="30px;"/>
+                <p:panelGrid columns="2">
+                   <f:facet name="header">  
+                        Nuovo utente
+                    </f:facet>
+                    <h:outputLabel for="nome" value="Cognome Nome: " />
+                    <p:inputText  value="#{utenti.nome}"/>
+                    <h:outputLabel for="ruolo" value="Ruolo: " />
+                    <p:inputText value="#{utenti.ruolo}"/>
+                    <h:outputLabel for="data" value="Data nascita: " />
+                    <p:calendar id="popup" value="#{utenti.data}" />
+                    <h:outputLabel for="via" value="Via: " />
+                    <p:inputText  value="#{utenti.via}"/>
+                    <h:outputLabel for="citta" value="citta: " />
+                    <p:inputText  value="#{utenti.citta}"/>
+                    <h:outputLabel for="telefono" value="Telefono: " />
+                    <p:inputMask value="#{utenti.telefono}" mask="999-9999999"/>      
+                    <f:facet name="footer">
+                        <h:commandButton value="Aggiungi utente" action="#{utenti.addAction}"/>
+                    </f:facet>
+                </p:panelGrid>                
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
