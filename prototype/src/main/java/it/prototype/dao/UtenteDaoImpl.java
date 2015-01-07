@@ -16,7 +16,7 @@ import it.prototype.entity.*;
  * @author Mauro Cognolato
  */
 @Transactional
-public class UtenteDaoImpl {
+public class UtenteDaoImpl implements UtenteDao {
 
 	@PersistenceContext
 	private EntityManager em;

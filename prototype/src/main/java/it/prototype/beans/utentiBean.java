@@ -5,16 +5,29 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import it.prototype.dao.ApplicazioneDao;
+import it.prototype.dao.UfficioDao;
+import it.prototype.dao.UtenteDao;
+import it.prototype.entity.Applicazione;
+import it.prototype.entity.Dettaglioutente;
+import it.prototype.entity.Ufficio;
+import it.prototype.entity.Utente;
  
 @ManagedBean(name = "utenti")
-@SessionScoped
+@RequestScoped
 public class utentiBean implements Serializable {
  
     private static final long serialVersionUID = 1L;
@@ -25,9 +38,39 @@ public class utentiBean implements Serializable {
     public String citta;
     public String telefono;
     utenteBean utente;
- 
+    
+    @ManagedProperty(value="#{utenteDao}")
+    UtenteDao utenteDao;
+    @ManagedProperty(value="#{applicazioneDao}")
+    ApplicazioneDao applicazioneDao;
+    @ManagedProperty(value="#{ufficioDao}")
+    UfficioDao ufficioDao;
 
-    public String getNome() {
+	public UtenteDao getUtenteDao() {
+		return utenteDao;
+	}
+
+	public void setUtenteDao(UtenteDao utenteDao) {
+		this.utenteDao = utenteDao;
+	}
+
+	public ApplicazioneDao getApplicazioneDao() {
+		return applicazioneDao;
+	}
+
+	public void setApplicazioneDao(ApplicazioneDao applicazioneDao) {
+		this.applicazioneDao = applicazioneDao;
+	}
+
+	public UfficioDao getUfficioDao() {
+		return ufficioDao;
+	}
+
+	public void setUfficioDao(UfficioDao ufficioDao) {
+		this.ufficioDao = ufficioDao;
+	}
+
+	public String getNome() {
 		return nome;
 	}
 
@@ -89,6 +132,48 @@ public class utentiBean implements Serializable {
     }
  
     public String addAction() {
+    	
+
+
+  	// Definisco un oggetto Ufficio e gli assegno il valore 
+  	Ufficio uff = new Ufficio();
+  	uff.setNomeUfficio("Vendite");
+  	ufficioDao.save(uff);
+  	int idUff = uff.getUfficioId();
+  	
+  	// Istanzio e salvo gli oggetti utente e dettaglioutente
+     Dettaglioutente dettUte = new Dettaglioutente(new Date(821212), "via Roma 11", "Milano", "0612345678");
+     Utente ute = new Utente("Mario", "Rossi", "Amministratore");
+     utenteDao.saveDetUte(ute, dettUte);
+      
+      // Creo gli oggetti Applicazione
+      Applicazione app1 = new Applicazione("SAP", "Sistema gestionale");
+      applicazioneDao.save(app1);
+      Applicazione app2 = new Applicazione("GIS", "Sistema territoriale");
+      applicazioneDao.save(app2);
+
+      // Creo un collegamento tra il nuovo utente e l'ufficio
+      ufficioDao.aggUffUte(ute, uff);
+      
+      // Creo un collegamento tra il nuovo utente e la applicazioni create
+      ute.getApplicazioni().add(app1);
+      ute.getApplicazioni().add(app2);
+      
+      // Aggiorno l'utente
+      utenteDao.aggUte(ute);
+
+      // Recupero e stampo a video gli oggetti
+      List<Utente> users = utenteDao.getAll();
+      String nomeUff = uff.getNomeUfficio();
+      for (Utente user : users) {
+			System.out.println("L utente " + user.getCognome() + " " + user.getNome() + " vive a " + user.getDettaglioutente().getCitta() + " e lavora nell'ufficio " + nomeUff);
+	    //    utenteDao.deleteUtente(user.getuserId());
+			for (Applicazione appx : user.getApplicazioni()) {
+	        	System.out.println("Abilitato all'applicazione: " + appx.getNomeapp() + " - " + appx.getDescrizioneapp());
+	        //	applicazioneDao.deleteApplicazione(appx.getAppid());
+	        }
+		}    
+    		
         utenteBean utentetmp = new utenteBean(this.nome, this.ruolo, this.data, this.via, this.citta, this.telefono);
         utentiList.add(utentetmp);
  

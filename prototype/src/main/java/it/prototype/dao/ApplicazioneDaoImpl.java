@@ -17,7 +17,7 @@ import it.prototype.entity.Applicazione;
  * @author Mauro Cognolato
  */
 @Transactional
-public class ApplicazioneDaoImpl {
+public class ApplicazioneDaoImpl implements ApplicazioneDao {
 
 	@PersistenceContext
 	private EntityManager em;
