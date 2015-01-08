@@ -23,7 +23,7 @@ public class Dettaglioutente {
 
     @Id
     @Column(name="userid", unique=true, nullable=false)
-
+    @GeneratedValue(generator="gen")
     @GenericGenerator(name="gen", strategy="foreign", parameters=@Parameter(name="property", value="utente"))
     private int userId;
     
