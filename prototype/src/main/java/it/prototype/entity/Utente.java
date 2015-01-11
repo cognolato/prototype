@@ -64,6 +64,14 @@ public class Utente {
 		this.ruolo = ruolo;
 
 	}
+	
+	public Utente(int userid, String nome, String cognome, String ruolo) {
+		this.userId = userid;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.ruolo = ruolo;
+
+	}
 
 	// 	Metodi Getter e Setter
 	

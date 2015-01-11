@@ -48,13 +48,20 @@ public class Dettaglioutente {
     
     }
     
-    public Dettaglioutente(Date dataNascita, String via, String citta, String telefono) {
+    public Dettaglioutente(int userid, Date dataNascita, String via, String citta, String telefono) {
+      this.userId = userid;
       this.dataNascita = dataNascita;
       this.via = via;
       this.citta = citta;
       this.telefono = telefono;
     }
-    
+ 
+    public Dettaglioutente(Date dataNascita, String via, String citta, String telefono) {
+        this.dataNascita = dataNascita;
+        this.via = via;
+        this.citta = citta;
+        this.telefono = telefono;
+      }
     
     // Metodi Getter e Setter 
     

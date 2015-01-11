@@ -6,21 +6,33 @@ import java.util.Date;
 public class utenteBean implements Serializable {
  
     private static final long serialVersionUID = 1L;
-    private String nome;
-    private String ruolo;
+    private int userid;
+ 	private String nome;
+    private String cognome;
+	private String ruolo;
     private Date data;
     private String via;
     private String citta;
     private String telefono;
  
-    public utenteBean(String nome, String ruolo, Date data, String via, String citta, String telefono) {
-        this.nome = nome;
+    public utenteBean(int userid, String nome, String cognome, String ruolo, Date data, String via, String citta, String telefono) {
+        this.userid = userid;
+    	this.nome = nome;
+        this.cognome = cognome;
         this.ruolo = ruolo;
         this.data = data;
         this.via = via;
         this.citta = citta;
         this.telefono = telefono;
     }
+    
+    public int getUserid() {
+ 		return userid;
+ 	}
+
+ 	public void setUserid(int userid) {
+ 		this.userid = userid;
+ 	}
 
 	public String getNome() {
 		return nome;
@@ -28,6 +40,14 @@ public class utenteBean implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+	
+    public String getCognome() {
+		return cognome;
+	}
+
+	public void setCognome(String cognome) {
+		this.cognome = cognome;
 	}
 
 	public String getRuolo() {
