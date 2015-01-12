@@ -36,13 +36,8 @@ public class UtenteDaoImpl implements UtenteDao {
 	
 	@Override	
 	public Utente getUtente(int id) {
-		// return em.find(Utente.class, id);
 		return em.createQuery("SELECT p FROM Utente p where userid = " + id, Utente.class).getSingleResult();
 	}	
-	
-	//public Utente getUtente1(int id) {
-	//	return em.find(Utente.class, id);
-	//}
 	
 	@Override	
 	public Dettaglioutente getDettaglioutente(Integer id) {

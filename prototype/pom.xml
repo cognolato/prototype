@@ -70,11 +70,11 @@
      <artifactId>primefaces</artifactId>
      <version>5.0</version>
   </dependency>
-     <dependency>
+  <dependency>
      <groupId>org.primefaces.themes</groupId>
-     <artifactId>bootstrap</artifactId>
-     <version>1.0.9</version>
-  </dependency>
+     <artifactId>cupertino</artifactId>
+     <version>1.0.10</version>
+  </dependency>		
   <dependency>
      <groupId>commons-fileupload</groupId>
      <artifactId>commons-fileupload</artifactId>
@@ -107,14 +107,14 @@
      <version>3.2.2.RELEASE</version>
   </dependency>
   <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-web</artifactId>
-   <version>3.2.2.RELEASE</version>
+     <groupId>org.springframework</groupId>
+     <artifactId>spring-web</artifactId>
+     <version>3.2.2.RELEASE</version>
   </dependency>
   <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-tx</artifactId>
-   <version>3.2.2.RELEASE</version>
+     <groupId>org.springframework</groupId>
+     <artifactId>spring-tx</artifactId>
+     <version>3.2.2.RELEASE</version>
   </dependency>
   <dependency>
      <groupId>org.springframework</groupId>
@@ -134,30 +134,30 @@
   </dependency>
   <!-- c3p0 dependency -->
   <dependency>
-   <groupId>c3p0</groupId>
-   <artifactId>c3p0</artifactId>
-   <version>0.9.1.2</version>
+     <groupId>c3p0</groupId>
+     <artifactId>c3p0</artifactId>
+     <version>0.9.1.2</version>
   </dependency>
   <dependency>
-   <groupId>javassist</groupId>
-   <artifactId>javassist</artifactId>
-   <version>3.12.1.GA</version>
+     <groupId>javassist</groupId>
+     <artifactId>javassist</artifactId>
+     <version>3.12.1.GA</version>
   </dependency>
-  		<!-- Log4j library -->
+  <!-- Log4j library -->
   <dependency>
-    <groupId>log4j</groupId>
-	<artifactId>log4j</artifactId>
-	<version>1.2.16</version>
+     <groupId>log4j</groupId>
+     <artifactId>log4j</artifactId>
+     <version>1.2.16</version>
   </dependency>
   <dependency>
-	<groupId>org.slf4j</groupId>
-	<artifactId>slf4j-api</artifactId>
-	<version>1.5.6</version>
+     <groupId>org.slf4j</groupId>
+     <artifactId>slf4j-api</artifactId>
+     <version>1.5.6</version>
   </dependency>		
   <dependency>
-	<groupId>org.slf4j</groupId>
-	<artifactId>slf4j-log4j12</artifactId>
-	<version>1.5.6</version>
+     <groupId>org.slf4j</groupId>
+     <artifactId>slf4j-log4j12</artifactId>
+     <version>1.5.6</version>
   </dependency>
 </dependencies>
 </project>

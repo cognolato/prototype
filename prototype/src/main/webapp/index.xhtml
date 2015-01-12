@@ -7,12 +7,14 @@
       >
     <h:head>
         <title>Gestione utenti</title>
+        <h:outputStylesheet library="css" name="main.css" />
     </h:head>
     <h:body>
         <h:form id="form1">
             <p:growl id="messages" showDetail="true"/>
-            <p:panel header="Gestione utenti" style="width: 800px;"> 
-                <p:dataTable value="#{utenti.utentiList}" var="o"  widgetVar="50" style="width: 760px;" editable="true">
+            <p:accordionPanel dynamic="true" cache="true" style="width: 900px;">
+        	<p:tab title="Gestione utenti inseriti">
+                <p:dataTable value="#{utenti.utentiList}" var="o"  widgetVar="50" style="width: 860px;" editable="true">
                     <f:facet name="header">  
                         Lista utenti  
                     </f:facet>
@@ -24,14 +26,7 @@
                         <f:facet name="header">  
                             <h:outputText value="ID utente" />  
                         </f:facet>
-                        <p:cellEditor>  
-                            <f:facet name="output">  
-                                <h:outputText value="#{o.userid}" />  
-                            </f:facet>  
-                            <f:facet name="input">  
-                                <p:inputText value="#{o.userid}" style="width:100%"/>  
-                            </f:facet>  
-                        </p:cellEditor> 
+                        <h:outputText value="#{o.userid}" />   
                     </p:column>
                    
                    <p:column>
@@ -86,9 +81,7 @@
                                 </h:outputText>
                             </f:facet>  
                             <f:facet name="input">  
-                                <p:inputText value="#{o.data}" style="width:100%"> 
-                                  <f:convertDateTime type="date" pattern="dd-MM-yyyy" timeZone="Europe/Berlin" />
-                                </p:inputText>
+                                  <p:calendar id="popup" value="#{o.data}" />
                             </f:facet>  
                         </p:cellEditor>
                     </p:column>  
@@ -132,12 +125,13 @@
                         </p:cellEditor>
                     </p:column>                           
                     <p:column headerText="Gest" style="width:50px">  
-                        <p:rowEditor />  
-                                        
+                        <p:rowEditor />                                    
                         <h:commandLink  styleClass="ui-icon ui-icon-trash" action="#{utenti.delete(o)}"/>
                     </p:column> 
                 </p:dataTable>
-                <p:spacer height="30px;"/>
+                <p:spacer height="10px;"/>
+                </p:tab>
+        		<p:tab title="Inserimento nuovo utente">
                 <p:panelGrid columns="2">
                    <f:facet name="header">  
                         Nuovo utente
@@ -159,8 +153,9 @@
                     <f:facet name="footer">
                         <h:commandButton value="Aggiungi utente" action="#{utenti.addAction}"/>
                     </f:facet>
-                </p:panelGrid>                
-            </p:panel>
+                </p:panelGrid>   
+             </p:tab>
+    		</p:accordionPanel>             
         </h:form>
     </h:body>
 </html>
