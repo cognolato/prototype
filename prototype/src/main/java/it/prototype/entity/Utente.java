@@ -36,6 +36,9 @@ public class Utente {
 
 	@Column(name="ruolo")
 	private String ruolo;
+	
+	@Column(name="password")
+	private String password;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "utente")
 	@JoinColumn(name="userid")
@@ -58,18 +61,20 @@ public class Utente {
 
 
 
-	public Utente(String nome, String cognome, String ruolo) {
+	public Utente(String nome, String cognome, String ruolo, String password) {
 		this.nome = nome;
 		this.cognome = cognome;
 		this.ruolo = ruolo;
+		this.password = password;
 
 	}
 	
-	public Utente(int userid, String nome, String cognome, String ruolo) {
+	public Utente(int userid, String nome, String cognome, String ruolo, String password) {
 		this.userId = userid;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.ruolo = ruolo;
+		this.password = password;
 
 	}
 
@@ -113,6 +118,14 @@ public class Utente {
 
 	public void setRuolo(String ruolo) {
 		this.ruolo = ruolo;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Dettaglioutente getDettaglioutente() {

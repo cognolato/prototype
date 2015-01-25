@@ -10,16 +10,18 @@ public class utenteBean implements Serializable {
  	private String nome;
     private String cognome;
 	private String ruolo;
+	private String password;
     private Date data;
     private String via;
     private String citta;
     private String telefono;
  
-    public utenteBean(int userid, String nome, String cognome, String ruolo, Date data, String via, String citta, String telefono) {
+    public utenteBean(int userid, String nome, String cognome, String ruolo, String password, Date data, String via, String citta, String telefono) {
         this.userid = userid;
     	this.nome = nome;
         this.cognome = cognome;
         this.ruolo = ruolo;
+        this.password = password;
         this.data = data;
         this.via = via;
         this.citta = citta;
@@ -56,6 +58,14 @@ public class utenteBean implements Serializable {
 
 	public void setRuolo(String ruolo) {
 		this.ruolo = ruolo;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Date getData() {

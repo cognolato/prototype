@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.event.RowEditEvent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import it.prototype.dao.ApplicazioneDao;
 import it.prototype.dao.UfficioDao;
 import it.prototype.dao.UtenteDao;
+import it.prototype.utils.*;
 import it.prototype.entity.Applicazione;
 import it.prototype.entity.Dettaglioutente;
 import it.prototype.entity.Ufficio;
@@ -36,17 +38,28 @@ public class utentiBean implements Serializable {
 	public String nome;
     public String cognome;
     public String ruolo;
+    public String password;
     private Date data;
     public String via;
     public String citta;
     public String telefono;
     public List<Utente> users;
 	utenteBean utente;
-    
-    @ManagedProperty(value="#{utenteDao}")
+	hashpass hspass;
+	
+	@ManagedProperty(value="#{utenteDao}")
     UtenteDao utenteDao;
     
-    public List<Utente> getUsers() {
+    
+    public hashpass getHspass() {
+		return hspass;
+	}
+
+	public void setHspass(hashpass hspass) {
+		this.hspass = hspass;
+	}
+
+	public List<Utente> getUsers() {
 		return users;
 	}
 
@@ -94,7 +107,15 @@ public class utentiBean implements Serializable {
 		this.ruolo = ruolo;
 	}
 
-    public Date getData() {
+    public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Date getData() {
         return data;
     }
  
@@ -150,7 +171,10 @@ public class utentiBean implements Serializable {
     	
   	// Istanzio e salvo gli oggetti utente e dettaglioutente
      Dettaglioutente dettUte = new Dettaglioutente(this.data, this.via, this.citta, this.telefono);
-     Utente ute = new Utente(this.nome, this.cognome, this.ruolo);
+     String hashed = "";
+     try {hashed = hspass.createHash(this.password);}
+     catch(Exception ex) {System.out.println("Anomalia conversione password");}
+     Utente ute = new Utente(this.nome, this.cognome, this.ruolo, hashed);
      utenteDao.saveDetUte(ute, dettUte);
     		
      inizializza();
@@ -158,6 +182,7 @@ public class utentiBean implements Serializable {
      nome = "";
      cognome = "";
      ruolo = "";
+     password = "";
      via = "";
      citta = "";
      telefono = "";
@@ -167,7 +192,7 @@ public class utentiBean implements Serializable {
     
     public void onEdit(RowEditEvent event) { 
         Dettaglioutente dettUte = new Dettaglioutente(((utenteBean) event.getObject()).getUserid(), ((utenteBean) event.getObject()).getData(), ((utenteBean) event.getObject()).getVia(), ((utenteBean) event.getObject()).getCitta(), ((utenteBean) event.getObject()).getTelefono());
-        Utente ute = new Utente(((utenteBean) event.getObject()).getUserid(), ((utenteBean) event.getObject()).getNome(), ((utenteBean) event.getObject()).getCognome(), ((utenteBean) event.getObject()).getRuolo());  	
+        Utente ute = new Utente(((utenteBean) event.getObject()).getUserid(), ((utenteBean) event.getObject()).getNome(), ((utenteBean) event.getObject()).getCognome(), ((utenteBean) event.getObject()).getRuolo(), ((utenteBean) event.getObject()).getPassword());  	
         // Aggiorno l'utente
         utenteDao.aggUte(ute, dettUte);
         inizializza();
@@ -193,7 +218,7 @@ public class utentiBean implements Serializable {
 	    List<Utente> users = utenteDao.getAll();
 		for (Utente user : users) {
 			Dettaglioutente dettuser = utenteDao.getDettaglioutente(user.getuserId());
-			utenteBean utentetmp = new utenteBean(user.getuserId(), user.getNome(), user.getCognome(), user.getRuolo(), dettuser.getDataNascita(), dettuser.getVia(), dettuser.getCitta(), dettuser.getTelefono());
+			utenteBean utentetmp = new utenteBean(user.getuserId(), user.getNome(), user.getCognome(), user.getRuolo(), user.getPassword(), dettuser.getDataNascita(), dettuser.getVia(), dettuser.getCitta(), dettuser.getTelefono());
 	        utentiList.add(utentetmp);
 		}
 	}

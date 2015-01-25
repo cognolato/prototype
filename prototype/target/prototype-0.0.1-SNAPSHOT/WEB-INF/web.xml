@@ -8,8 +8,6 @@
       /WEB-INF/applicationContext.xml
       </param-value>
    </context-param>
-
-   <!-- The Bootstrap listener to start up and shut down Spring's root WebApplicationContext. It is registered to Servlet Container -->
   <listener>
   <listener-class>
    org.springframework.web.context.ContextLoaderListener
@@ -30,10 +28,10 @@
   </context-param>
   <context-param>
     <param-name>primefaces.THEME</param-name>
-    <param-value>bootstrap</param-value>
+    <param-value>cupertino</param-value>
   </context-param>
   <welcome-file-list>
-    <welcome-file>index.xhtml</welcome-file>
+    <welcome-file>login.jsf</welcome-file>
   </welcome-file-list>
   <servlet>
     <servlet-name>Faces Servlet</servlet-name>
@@ -42,7 +40,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.xhtml</url-pattern>
+    <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
   <session-config>
     <session-timeout>30</session-timeout>

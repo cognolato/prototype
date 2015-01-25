@@ -10,9 +10,9 @@
         <h:outputStylesheet library="css" name="main.css" />
     </h:head>
     <h:body>
+    <h1>Benvenuto, #{loginBean.uname}</h1>
         <h:form id="form1">
             <p:growl id="messages" showDetail="true"/>
-            <!-- p:panel header="Gestione utenti" style="width: 800px;" --> 
             <p:accordionPanel dynamic="true" cache="true" style="width: 900px;">
         	<p:tab title="Gestione utenti inseriti">
                 <p:dataTable value="#{utenti.utentiList}" var="o"  widgetVar="50" style="width: 860px;" editable="true">
@@ -143,6 +143,8 @@
                     <p:inputText  value="#{utenti.cognome}"/>
                     <h:outputLabel for="ruolo" value="Ruolo: " />
                     <p:inputText value="#{utenti.ruolo}"/>
+                    <h:outputLabel for="ruolo" value="Password: " />
+                    <p:password feedback="true" value="#{utenti.password}"/>                    
                     <h:outputLabel for="data" value="Data nascita: " />
                     <p:calendar id="popup" value="#{utenti.data}" />
                     <h:outputLabel for="via" value="Via: " />
@@ -157,7 +159,7 @@
                 </p:panelGrid>   
              </p:tab>
     		</p:accordionPanel>             
-            <!-- /p:panel -->
         </h:form>
+        <p:commandButton action="#{loginBean.logout}" value="Logout"  ajax="false"></p:commandButton>
     </h:body>
 </html>

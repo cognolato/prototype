@@ -27,4 +27,6 @@ public interface UtenteDao {
 
 	public void saveDetUte(Utente ute, Dettaglioutente dettUte);
 	
+	public boolean login(String user, String password);
+	
 }

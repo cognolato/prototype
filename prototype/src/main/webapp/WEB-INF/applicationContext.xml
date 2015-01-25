@@ -12,7 +12,8 @@
 	<tx:annotation-driven />
 	<context:component-scan base-package="it.prototype.dao" />
 	<context:annotation-config />
-
+	
+	<bean id="userDao" class="it.prototype.dao.UserDaoImpl" />
 	<bean id="utenteDao" class="it.prototype.dao.UtenteDaoImpl" />
 	<bean id="ufficioDao" class="it.prototype.dao.UfficioDaoImpl" />
 	<bean id="applicazioneDao" class="it.prototype.dao.ApplicazioneDaoImpl" />

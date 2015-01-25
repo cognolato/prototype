@@ -3,13 +3,17 @@ package it.prototype.dao;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedProperty;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import it.prototype.beans.utenteBean;
+import it.prototype.entity.Applicazione;
 import it.prototype.entity.Utente;
 import it.prototype.entity.Dettaglioutente;
+import it.prototype.utils.*;
 
 
 /**
@@ -19,6 +23,8 @@ import it.prototype.entity.Dettaglioutente;
  */
 @Transactional(value = "transactionManager")
 public class UtenteDaoImpl implements UtenteDao {
+
+	hashpass hspass;
 
 	@PersistenceContext(unitName = "jpaData")
 	private EntityManager em;
@@ -63,6 +69,37 @@ public class UtenteDaoImpl implements UtenteDao {
 	em.flush();
 	// riallinea l'entità ai valori del DB
 	em.refresh(ute);
+	}
+	
+	@Override
+    public boolean login(String user, String password) {
+
+		boolean bootemp = false;
+		List<Utente> users = em.createQuery("SELECT p FROM Utente p", Utente.class).getResultList(); 
+		if (users == null || users.isEmpty()) {
+			bootemp = false;
+	    } else {
+			for (Utente userx : users) {
+				String login = userx.getCognome() + userx.getNome();
+				try  {
+					if (user.equals(login) && hspass.validatePassword(password, userx.getPassword())) {
+						bootemp = true;	} 
+				}
+		        catch(Exception ex)  {
+		            System.out.println("ERROR: " + ex); }
+            }
+	    }
+		return bootemp;
+
+    }
+	
+	 
+    public hashpass getHspass() {
+		return hspass;
+	}
+
+	public void setHspass(hashpass hspass) {
+		this.hspass = hspass;
 	}
 
 	public EntityManager getEm() {
