@@ -12,8 +12,8 @@
         <redirect>     
         </redirect>
         </navigation-case>
- </navigation-rule>
-       <!-- JSF and Spring are integrated -->
+    </navigation-rule>
+   <!-- JSF and Spring are integrated -->
    <application>
      <el-resolver>
       org.springframework.web.jsf.el.SpringBeanFacesELResolver

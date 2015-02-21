@@ -46,8 +46,8 @@ public class Utente {
 	    
 	 @ManyToOne
 	 @JoinColumn(name="ufficioId", 
-	                insertable=false, updatable=false, 
-	                nullable=false)
+	                insertable=false, updatable=true, 
+	                nullable=true)
 	    private Ufficio ufficio;
 	    
 	  public Utente() {  
@@ -135,5 +135,15 @@ public class Utente {
 	public void setDettaglioutente(Dettaglioutente dettaglioutente) {
 		this.dettaglioutente = dettaglioutente;
 	}
+
+	public Ufficio getUfficio() {
+		return ufficio;
+	}
+
+	public void setUfficio(Ufficio ufficio) {
+		this.ufficio = ufficio;
+	}
+	
+	
 
 }

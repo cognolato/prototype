@@ -23,10 +23,14 @@ public interface UtenteDao {
 	
 	public void aggUte(Utente ute, Dettaglioutente dettute);
 	
+	public void aggUte(Utente ute);
+	
 	public List<Utente>getAll();
 
 	public void saveDetUte(Utente ute, Dettaglioutente dettUte);
 	
 	public boolean login(String user, String password);
+	
+	public Utente estrlogin(String user, String password);
 	
 }

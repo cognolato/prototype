@@ -43,6 +43,12 @@ public class Ufficio {
     this.nomeUfficio = nome;
   }
     
+	public Ufficio(int ufficioid, String nome) {
+		this.ufficioId = ufficioid;
+	    this.nomeUfficio = nome;
+
+	}
+    
   // Metodi Getter e Setter
 
   public int getUfficioId() {

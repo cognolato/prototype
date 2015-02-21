@@ -2,6 +2,8 @@ package it.prototype.beans;
  
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
  
 public class utenteBean implements Serializable {
  
@@ -10,18 +12,23 @@ public class utenteBean implements Serializable {
  	private String nome;
     private String cognome;
 	private String ruolo;
+	private String nomeuff;
 	private String password;
+	private String city;  
+    private Map<String,String> ufficio = new HashMap<String, String>();
     private Date data;
     private String via;
     private String citta;
     private String telefono;
  
-    public utenteBean(int userid, String nome, String cognome, String ruolo, String password, Date data, String via, String citta, String telefono) {
+    public utenteBean(int userid, String nome, String cognome, String ruolo, String nomeuff, String password, Date data, String via, String citta, String telefono) {
         this.userid = userid;
     	this.nome = nome;
         this.cognome = cognome;
         this.ruolo = ruolo;
+        this.nomeuff = nomeuff;
         this.password = password;
+        this.ufficio = ufficio;
         this.data = data;
         this.via = via;
         this.citta = citta;
@@ -58,6 +65,14 @@ public class utenteBean implements Serializable {
 
 	public void setRuolo(String ruolo) {
 		this.ruolo = ruolo;
+	}
+
+	public String getNomeuff() {
+		return nomeuff;
+	}
+
+	public void setNomeuff(String nomeuff) {
+		this.nomeuff = nomeuff;
 	}
 
 	public String getPassword() {

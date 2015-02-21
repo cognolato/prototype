@@ -5,7 +5,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -31,6 +35,7 @@ import it.prototype.entity.Utente;
  
 @ManagedBean(name = "utenti")
 @RequestScoped
+@SessionScoped
 public class utentiBean implements Serializable {
  
     private static final long serialVersionUID = 1L;
@@ -39,19 +44,28 @@ public class utentiBean implements Serializable {
     public String cognome;
     public String ruolo;
     public String password;
+    private String seluff; 
+    private String seluff1; 
     private Date data;
     public String via;
     public String citta;
     public String telefono;
     public List<Utente> users;
-	utenteBean utente;
-	hashpass hspass;
+    public List<Ufficio> uffix;
+    public Ufficio sngUff;
+    public String nomeUff;
+    public utenteBean utente;
+    public hashpass hspass;
+
+	public Map<String,String> ufficio1List = new HashMap<String, String>();
 	
 	@ManagedProperty(value="#{utenteDao}")
     UtenteDao utenteDao;
-    
-    
-    public hashpass getHspass() {
+	
+	@ManagedProperty(value="#{ufficioDao}")
+    UfficioDao ufficioDao;
+
+	public hashpass getHspass() {
 		return hspass;
 	}
 
@@ -74,6 +88,16 @@ public class utentiBean implements Serializable {
 	public void setUtenteDao(UtenteDao utenteDao) {
 		this.utenteDao = utenteDao;
 	}
+	
+
+	public UfficioDao getUfficioDao() {
+		return ufficioDao;
+	}
+
+	public void setUfficioDao(UfficioDao ufficioDao) {
+		this.ufficioDao = ufficioDao;
+	}
+
 
     public int getUserid() {
 		return userid;
@@ -113,6 +137,22 @@ public class utentiBean implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}	
+
+	public String getSeluff() {
+		return seluff;
+	}
+
+	public void setSeluff(String seluff) {
+		this.seluff = seluff;
+	}
+
+	public String getSeluff1() {
+		return seluff1;
+	}
+
+	public void setSeluff1(String seluff1) {
+		this.seluff1 = seluff1;
 	}
 
 	public Date getData() {
@@ -160,9 +200,46 @@ public class utentiBean implements Serializable {
         return utentiList;
     }
     
-    @PostConstruct
+    public List<Ufficio> getUffix() {
+		return uffix;
+	}
+
+	public void setUffix(List<Ufficio> uffix) {
+		this.uffix = uffix;
+	}
+
+	public Ufficio getSngUff() {
+		return sngUff;
+	}
+
+	public void setSngUff(Ufficio sngUff) {
+		this.sngUff = sngUff;
+	}
+
+	public static ArrayList<utenteBean> getUtentilist() {
+		return utentiList;
+	}
+
+	public Map<String, String> getUfficio1List() {
+		return ufficio1List;
+	}
+
+	public void setUfficio1List(Map<String, String> ufficio1List) {
+		this.ufficio1List = ufficio1List;
+	}
+
+	public String getNomeUff() {
+		return nomeUff;
+	}
+
+	public void setNomeUff(String nomeUff) {
+		this.nomeUff = nomeUff;
+	}
+
+	@PostConstruct
     public void init() {
 	    users = utenteDao.getAll();
+	    uffix = ufficioDao.getAll();
 	    inizializza();
 	    initdata();
 	}
@@ -176,16 +253,12 @@ public class utentiBean implements Serializable {
      catch(Exception ex) {System.out.println("Anomalia conversione password");}
      Utente ute = new Utente(this.nome, this.cognome, this.ruolo, hashed);
      utenteDao.saveDetUte(ute, dettUte);
-    		
+     
+     Ufficio uff = ufficioDao.getUfficio(Integer.parseInt(seluff));
+     ufficioDao.aggUffUte(ute, uff);
+     
      inizializza();
-
-     nome = "";
-     cognome = "";
-     ruolo = "";
-     password = "";
-     via = "";
-     citta = "";
-     telefono = "";
+     initcampi();
      initdata();
      return null;
     }
@@ -195,8 +268,14 @@ public class utentiBean implements Serializable {
         Utente ute = new Utente(((utenteBean) event.getObject()).getUserid(), ((utenteBean) event.getObject()).getNome(), ((utenteBean) event.getObject()).getCognome(), ((utenteBean) event.getObject()).getRuolo(), ((utenteBean) event.getObject()).getPassword());  	
         // Aggiorno l'utente
         utenteDao.aggUte(ute, dettUte);
+        
+        seluff1 = estrKeyUff(seluff);
+
+        Ufficio uff = ufficioDao.getUfficio(Integer.parseInt(seluff));
+        ufficioDao.aggUffUte(ute, uff);
+
         inizializza();
-        FacesMessage msg = new FacesMessage("Record modificato",((utenteBean) event.getObject()).getNome());  
+        FacesMessage msg = new FacesMessage("Utente modificato", ((utenteBean) event.getObject()).getCognome() + " " + ((utenteBean) event.getObject()).getNome());
         FacesContext.getCurrentInstance().addMessage(null, msg);  
     }  
        
@@ -205,25 +284,58 @@ public class utentiBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg); 
     } 
     
-	public void delete(utenteBean std){ 
-		// Elimina l'utente
-        utenteDao.deleteUtente(std.getUserid());
-        inizializza();
-		FacesMessage msg = new FacesMessage("Record cancellato");   
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-	}
+	public void delete(utenteBean std){
+		if (std.getNome().equals("Admin")){
+			// Elimina l'utente
+			utenteDao.deleteUtente(std.getUserid());
+			inizializza();
+			FacesMessage msg = new FacesMessage("Record cancellato");   
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} else {
+			FacesMessage msg = new FacesMessage("Impossibile cancellare utente Admin");   
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
+	} 
 	
-	public void inizializza(){
+    public String changePass() {
+        return "changepass";
+     }
+    
+    public String gestUff() {
+        return "ufficio";
+     }
+	
+	private void inizializza(){
+		ufficio1List = new HashMap<String, String>();
+		int indi=0;
+		for (Ufficio uff : uffix) {
+			ufficio1List.put(uff.getNomeUfficio(), Integer.toString(uff.getUfficioId()));
+			indi = indi + 1;
+		}
+		
         utentiList.clear();
 	    List<Utente> users = utenteDao.getAll();
 		for (Utente user : users) {
 			Dettaglioutente dettuser = utenteDao.getDettaglioutente(user.getuserId());
-			utenteBean utentetmp = new utenteBean(user.getuserId(), user.getNome(), user.getCognome(), user.getRuolo(), user.getPassword(), dettuser.getDataNascita(), dettuser.getVia(), dettuser.getCitta(), dettuser.getTelefono());
-	        utentiList.add(utentetmp);
+			Ufficio tmpuff = user.getUfficio();
+			nomeUff = tmpuff.getNomeUfficio();
+			seluff =  Integer.toString(tmpuff.getUfficioId());
+			utenteBean utentetmp = new utenteBean(user.getuserId(), user.getNome(), user.getCognome(), user.getRuolo(), nomeUff, user.getPassword(), dettuser.getDataNascita(), dettuser.getVia(), dettuser.getCitta(), dettuser.getTelefono());
+			utentiList.add(utentetmp);
 		}
 	}
 	
-	public void initdata(){
+	private void initcampi(){
+	     nome = "";
+	     cognome = "";
+	     ruolo = "";
+	     password = "";
+	     via = "";
+	     citta = "";
+	     telefono = "";	
+	}
+	
+	private void initdata(){		
 	     String dateStr = "1970-01-01T00:00:00.000+01:00";
 	     SimpleDateFormat sdf = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSSZ"); 
 	     try  {
@@ -233,4 +345,30 @@ public class utentiBean implements Serializable {
 	     }
 	}
 	
+	private String estrKeyUff(String seluffTmp){
+		 String seluff1Tmp = "";
+		 ufficio1List = new HashMap<String, String>();
+		 int indi=0;
+		 for (Ufficio uff : uffix) {
+			ufficio1List.put(uff.getNomeUfficio(), Integer.toString(uff.getUfficioId()));
+			indi = indi + 1;
+			 if (Integer.toString(uff.getUfficioId()).equals(seluffTmp)) {
+	        	 seluff1Tmp = uff.getNomeUfficio();
+	         }
+		 }
+		 return seluff1Tmp;
+	}
+
+	
+	public Map<String,String> getUfficio1Value() {
+
+		int indi=0;
+	   	for (Ufficio uff : uffix) {
+	   		ufficio1List.put(uff.getNomeUfficio(), Integer.toString(uff.getUfficioId()));
+			indi = indi + 1;
+		}
+		return ufficio1List;
+	
+	}
+
 }

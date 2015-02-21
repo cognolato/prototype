@@ -10,12 +10,21 @@
         <h:outputStylesheet library="css" name="main.css" />
     </h:head>
     <h:body>
-    <h1>Benvenuto, #{loginBean.uname}</h1>
+    <h1></h1>
         <h:form id="form1">
             <p:growl id="messages" showDetail="true"/>
-            <p:accordionPanel dynamic="true" cache="true" style="width: 900px;">
+            <p:toolbar>
+        		<f:facet name="left"> <h:outputText value="Utente attivo: #{loginBean.uname}" style="color:#2779BD;"/>
+        		</f:facet>
+        		<f:facet name="right">
+        			<p:commandButton action="#{utenti.gestUff}" value="Gestione uffici"  ajax="false"></p:commandButton>
+        			<p:commandButton action="#{utenti.changePass}" value="Cambio password"  ajax="false"></p:commandButton>
+        			<p:commandButton action="#{loginBean.logout}" value="Logout"  ajax="false"></p:commandButton>  
+        		</f:facet>
+    		</p:toolbar>
+            <p:accordionPanel dynamic="true" cache="true" style="width: 1050px;">
         	<p:tab title="Gestione utenti inseriti">
-                <p:dataTable value="#{utenti.utentiList}" var="o"  widgetVar="50" style="width: 860px;" editable="true">
+                <p:dataTable value="#{utenti.utentiList}" var="o"  widgetVar="50" style="width: 1020px;" editable="true">
                     <f:facet name="header">  
                         Lista utenti  
                     </f:facet>
@@ -27,7 +36,7 @@
                         <f:facet name="header">  
                             <h:outputText value="ID utente" />  
                         </f:facet>
-                        <h:outputText value="#{o.userid}" />   
+                        <h:outputText value="#{o.userid}" style="width:25px"/>   
                     </p:column>
                    
                    <p:column>
@@ -71,6 +80,21 @@
                             </f:facet>  
                         </p:cellEditor>
                     </p:column>
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Ufficio" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.nomeuff}" style="width:100%"/>  
+                            </f:facet>                         
+                            <f:facet name="input"  style="width:100%">  
+                                <h:selectOneMenu id="ufficio" value="#{utenti.seluff}" effect="fold">
+                    					<f:selectItems value="#{utenti.ufficio1Value}"/>
+                    			</h:selectOneMenu> 
+                            </f:facet>   
+                        </p:cellEditor>
+                    </p:column>                    
                      <p:column>
                         <f:facet name="header">  
                             <h:outputText value="Data di nascita" />  
@@ -144,7 +168,11 @@
                     <h:outputLabel for="ruolo" value="Ruolo: " />
                     <p:inputText value="#{utenti.ruolo}"/>
                     <h:outputLabel for="ruolo" value="Password: " />
-                    <p:password feedback="true" value="#{utenti.password}"/>                    
+                    <p:password feedback="true" value="#{utenti.password}"/>   
+                    <h:outputLabel for="ufficio" value="Ufficio: " />
+                    <h:selectOneMenu id="ufficio" value="#{utenti.seluff}" effect="fold" editable="true">
+                    	<f:selectItems value="#{utenti.ufficio1Value}"/>
+                    </h:selectOneMenu>            
                     <h:outputLabel for="data" value="Data nascita: " />
                     <p:calendar id="popup" value="#{utenti.data}" />
                     <h:outputLabel for="via" value="Via: " />
@@ -158,8 +186,9 @@
                     </f:facet>
                 </p:panelGrid>   
              </p:tab>
-    		</p:accordionPanel>             
+    		</p:accordionPanel>
+    		           
         </h:form>
-        <p:commandButton action="#{loginBean.logout}" value="Logout"  ajax="false"></p:commandButton>
+        
     </h:body>
 </html>

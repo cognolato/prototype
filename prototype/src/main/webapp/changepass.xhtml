@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet library="css" name="main.css" />
+        <title>Pagina di login</title>
+    </h:head>
+    <h:body>
+            <h:form id="loginForm">          
+            <p:growl id="msg" showDetail="true" life="3000" />
+            <p:panel header="Cambio password" style="width: 360px;">
+                <h:panelGrid id="loginPanel" columns="2">
+                    <h:outputText value="Username" />
+                    <p:inputText id="username" value="#{cambioBean.uname}" ></p:inputText>
+                    <h:outputText value="Password" />
+                    <p:password id="password" value="#{cambioBean.password}"  feedback="false"></p:password>
+                    <p:spacer></p:spacer>
+                    <p:spacer></p:spacer> 
+                   
+                    <h:outputLabel for="pwd1" value="Nuova password: " />
+                    <p:password id="pwd1" value="#{cambioBean.password1}" match="pwd2" label="Password 1" feedback="true" required="true" />
+ 
+                    <h:outputLabel for="pwd2" value="Riperti password: " />
+                    <p:password id="pwd2" value="#{cambioBean.password2}" label="Password 2" feedback="true" required="true" />
+                    <p:spacer></p:spacer>
+                    <p:spacer></p:spacer>                   
+                    <p:commandButton action="#{cambioBean.modiPass}" value="Cambio password" update="loginForm" ajax="true"></p:commandButton>
+                </h:panelGrid> 
+            </p:panel>
+        </h:form>
+    </h:body> 
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+        <title>Gestione uffici</title>
+        <h:outputStylesheet library="css" name="main.css" />
+    </h:head>
+    <h:body>
+    <h1></h1>
+        <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:toolbar>
+        		<f:facet name="left"> <h:outputText value="Utente attivo: #{loginBean.uname}" style="color:#2779BD;"/>
+        		</f:facet>
+        		<f:facet name="right">
+        			<p:commandButton action="#{uffici.indietro}" value="Indietro"  ajax="false"></p:commandButton>
+        			<p:commandButton action="#{loginBean.logout}" value="Logout"  ajax="false"></p:commandButton>  
+        		</f:facet>
+    		</p:toolbar>
+            <p:accordionPanel dynamic="true" cache="true" style="width: 900px;">
+        	<p:tab title="Gestione uffici">
+                <p:dataTable value="#{uffici.ufficioList}" var="o"  widgetVar="50" style="width: 500px;" editable="true">
+                    <f:facet name="header">  
+                        Lista uffici  
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{uffici.onEdit}" update=":form1:messages" />  
+                    <p:ajax event="rowEditCancel" listener="#{uffici.onCancel}" update=":form1:messages" /> 
+                   <h:inputHidden value="some text" />
+                   
+                   <p:column style="width: 20%;">
+                        <f:facet name="header">  
+                            <h:outputText value="ID utente" />  
+                        </f:facet>
+                        <h:outputText value="#{o.ufficioId}" />   
+                    </p:column>
+                   
+                   <p:column style="width: 80%;">
+                        <f:facet name="header">  
+                            <h:outputText value="Nome ufficio" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.nomeUfficio}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.nomeUfficio}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>                      
+                    <p:column headerText="Gest" style="width:50px">  
+                        <p:rowEditor />                                    
+                        <h:commandLink  styleClass="ui-icon ui-icon-trash" action="#{uffici.delete(o)}"/>
+                    </p:column> 
+                </p:dataTable>
+                <p:spacer height="10px;"/>
+                </p:tab>
+        		<p:tab title="Inserimento nuovo ufficio">
+                <p:panelGrid columns="2" style="width: 500px;">
+                   <f:facet name="header">  
+                        Nuovo utente
+                    </f:facet>
+                    <h:outputLabel for="nomeUfficio" value="Nome: " />
+                    <p:inputText  value="#{uffici.nomeUfficio}"/> 
+                    <f:facet name="footer">
+                        <h:commandButton value="Aggiungi ufficio" action="#{uffici.addAction}"/>
+                    </f:facet>
+                </p:panelGrid>   
+             </p:tab>
+    		</p:accordionPanel>
+    		           
+        </h:form>
+        
+    </h:body>
+</html>

@@ -2,6 +2,7 @@ package it.prototype.beans;
 
 import it.prototype.dao.*;
 import it.prototype.entity.*;
+import it.prototype.utils.hashpass;
 import it.prototype.utils.util;
 
 import java.io.Serializable;
@@ -21,8 +22,10 @@ public class loginBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private String password;
     private String message, uname;
+
+	hashpass hspass;
     
-    @ManagedProperty(value="#{utenteDao}")
+	@ManagedProperty(value="#{utenteDao}")
     UtenteDao utenteDao;
     
 

@@ -38,8 +38,25 @@ public class UfficioDaoImpl implements UfficioDao {
 	public void aggUffUte(Utente ute, Ufficio uff) {
         uff.getUtenti().add(ute);
         em.merge(uff);
+        em.flush();
+    	// riallinea l'entità ai valori del DB
+    	em.refresh(uff);
+	}
+	
+	public void remUffUte(Utente ute, Ufficio uff) {
+		uff.getUtenti().remove(ute);
+        em.merge(uff);
+	}	
+
+	public void aggUff(Ufficio uff) {
+        em.merge(uff);
 	}
 
+	public Ufficio minUff() {	
+		Integer idTmp = (Integer)em.createQuery("select min(u.ufficioId) from Ufficio u").getSingleResult();
+		return getUfficio(idTmp);
+	}
+	
 	public List<Ufficio>getAll() {
 		return em.createQuery("SELECT p FROM Ufficio p", Ufficio.class).getResultList();
 	}

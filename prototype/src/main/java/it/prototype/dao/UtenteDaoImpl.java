@@ -54,7 +54,14 @@ public class UtenteDaoImpl implements UtenteDao {
 	public void aggUte(Utente ute, Dettaglioutente dettute) {
 		em.merge(dettute);
         em.merge(ute);
+        em.flush();
 	}
+	
+	@Override	
+	public void aggUte(Utente ute) {
+        em.merge(ute);
+	}
+	
 	
 	@Override	
 	public List<Utente>getAll() {
@@ -92,6 +99,28 @@ public class UtenteDaoImpl implements UtenteDao {
 		return bootemp;
 
     }
+	
+	@Override
+    public Utente estrlogin(String user, String password) {
+
+		Utente usery = null;
+		List<Utente> users = em.createQuery("SELECT p FROM Utente p", Utente.class).getResultList(); 
+		if (users == null || users.isEmpty()) {
+			usery = null;
+	    } else {
+			for (Utente userx : users) {
+				String login = userx.getCognome() + userx.getNome();
+				try  {
+					if (user.equals(login) && hspass.validatePassword(password, userx.getPassword())) {
+						usery = userx;	} 
+				}
+		        catch(Exception ex)  {
+		            System.out.println("ERROR: " + ex); }
+            }
+	    }
+		return usery;
+
+    }	
 	
 	 
     public hashpass getHspass() {
