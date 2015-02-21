@@ -151,7 +151,7 @@
                     </p:column>                           
                     <p:column headerText="Gest" style="width:50px">  
                         <p:rowEditor />                                    
-                        <h:commandLink  styleClass="ui-icon ui-icon-trash" action="#{utenti.delete(o)}"/>
+                        <p:commandLink  styleClass="ui-icon ui-icon-trash" action="#{utenti.delete(o)}"/>
                     </p:column> 
                 </p:dataTable>
                 <p:spacer height="10px;"/>
@@ -180,7 +180,7 @@
                     <h:outputLabel for="citta" value="citta: " />
                     <p:inputText  value="#{utenti.citta}"/>
                     <h:outputLabel for="telefono" value="Telefono: " />
-                    <p:inputMask value="#{utenti.telefono}" mask="999-9999999"/>      
+                    <p:inputMask value="#{utenti.telefono}" mask="999-9999999"/>                          
                     <f:facet name="footer">
                         <h:commandButton value="Aggiungi utente" action="#{utenti.addAction}"/>
                     </f:facet>

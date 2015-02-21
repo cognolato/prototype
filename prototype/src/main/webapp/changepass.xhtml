@@ -23,8 +23,9 @@
  
                     <h:outputLabel for="pwd2" value="Riperti password: " />
                     <p:password id="pwd2" value="#{cambioBean.password2}" label="Password 2" feedback="true" required="true" />
+                    <p:spacer></p:spacer>     
                     <p:spacer></p:spacer>
-                    <p:spacer></p:spacer>                   
+                    <p:spacer></p:spacer>                                                    
                     <p:commandButton action="#{cambioBean.modiPass}" value="Cambio password" update="loginForm" ajax="true"></p:commandButton>
                 </h:panelGrid> 
             </p:panel>
