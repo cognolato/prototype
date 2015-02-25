@@ -45,14 +45,12 @@ public class utentiBean implements Serializable {
     public String ruolo;
     public String password;
     private String seluff; 
-    private String seluff1; 
     private Date data;
     public String via;
     public String citta;
     public String telefono;
     public List<Utente> users;
     public List<Ufficio> uffix;
-    public Ufficio sngUff;
     public String nomeUff;
     public utenteBean utente;
     public hashpass hspass;
@@ -147,14 +145,6 @@ public class utentiBean implements Serializable {
 		this.seluff = seluff;
 	}
 
-	public String getSeluff1() {
-		return seluff1;
-	}
-
-	public void setSeluff1(String seluff1) {
-		this.seluff1 = seluff1;
-	}
-
 	public Date getData() {
         return data;
     }
@@ -208,14 +198,6 @@ public class utentiBean implements Serializable {
 		this.uffix = uffix;
 	}
 
-	public Ufficio getSngUff() {
-		return sngUff;
-	}
-
-	public void setSngUff(Ufficio sngUff) {
-		this.sngUff = sngUff;
-	}
-
 	public static ArrayList<utenteBean> getUtentilist() {
 		return utentiList;
 	}
@@ -246,8 +228,9 @@ public class utentiBean implements Serializable {
  
     public String addAction() {
     	
-  	// Istanzio e salvo gli oggetti utente e dettaglioutente
+  	 // Istanzio e salvo gli oggetti utente e dettaglioutente
      Dettaglioutente dettUte = new Dettaglioutente(this.data, this.via, this.citta, this.telefono);
+     // Crittografia della password
      String hashed = "";
      try {hashed = hspass.createHash(this.password);}
      catch(Exception ex) {System.out.println("Anomalia conversione password");}
@@ -268,8 +251,6 @@ public class utentiBean implements Serializable {
         Utente ute = new Utente(((utenteBean) event.getObject()).getUserid(), ((utenteBean) event.getObject()).getNome(), ((utenteBean) event.getObject()).getCognome(), ((utenteBean) event.getObject()).getRuolo(), ((utenteBean) event.getObject()).getPassword());  	
         // Aggiorno l'utente
         utenteDao.aggUte(ute, dettUte);
-        
-        seluff1 = estrKeyUff(seluff);
 
         Ufficio uff = ufficioDao.getUfficio(Integer.parseInt(seluff));
         ufficioDao.aggUffUte(ute, uff);
@@ -285,14 +266,14 @@ public class utentiBean implements Serializable {
     } 
     
 	public void delete(utenteBean std){
-		if (std.getNome().equals("Admin")){
+		if (std.getRuolo().equals("Amministratore")){
+			FacesMessage msg = new FacesMessage("Impossibile cancellare utente Admin");   
+			FacesContext.getCurrentInstance().addMessage(null, msg);
+		} else {
 			// Elimina l'utente
 			utenteDao.deleteUtente(std.getUserid());
 			inizializza();
 			FacesMessage msg = new FacesMessage("Record cancellato");   
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-		} else {
-			FacesMessage msg = new FacesMessage("Impossibile cancellare utente Admin");   
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		}
 	} 
@@ -306,12 +287,6 @@ public class utentiBean implements Serializable {
      }
 	
 	private void inizializza(){
-		ufficio1List = new HashMap<String, String>();
-		int indi=0;
-		for (Ufficio uff : uffix) {
-			ufficio1List.put(uff.getNomeUfficio(), Integer.toString(uff.getUfficioId()));
-			indi = indi + 1;
-		}
 		
         utentiList.clear();
 	    List<Utente> users = utenteDao.getAll();
@@ -319,11 +294,12 @@ public class utentiBean implements Serializable {
 			Dettaglioutente dettuser = utenteDao.getDettaglioutente(user.getuserId());
 			Ufficio tmpuff = user.getUfficio();
 			nomeUff = tmpuff.getNomeUfficio();
-			seluff =  Integer.toString(tmpuff.getUfficioId());
+		//	seluff =  Integer.toString(tmpuff.getUfficioId());
 			utenteBean utentetmp = new utenteBean(user.getuserId(), user.getNome(), user.getCognome(), user.getRuolo(), nomeUff, user.getPassword(), dettuser.getDataNascita(), dettuser.getVia(), dettuser.getCitta(), dettuser.getTelefono());
 			utentiList.add(utentetmp);
 		}
 	}
+
 	
 	private void initcampi(){
 	     nome = "";
@@ -343,20 +319,6 @@ public class utentiBean implements Serializable {
 	     } catch (ParseException e) { 
 	         System.out.println("Anomalia parser data " + sdf); 
 	     }
-	}
-	
-	private String estrKeyUff(String seluffTmp){
-		 String seluff1Tmp = "";
-		 ufficio1List = new HashMap<String, String>();
-		 int indi=0;
-		 for (Ufficio uff : uffix) {
-			ufficio1List.put(uff.getNomeUfficio(), Integer.toString(uff.getUfficioId()));
-			indi = indi + 1;
-			 if (Integer.toString(uff.getUfficioId()).equals(seluffTmp)) {
-	        	 seluff1Tmp = uff.getNomeUfficio();
-	         }
-		 }
-		 return seluff1Tmp;
 	}
 
 	

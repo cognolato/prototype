@@ -27,7 +27,7 @@
             <value>jdbc:derby://localhost:1527/derby/derbyDB</value>
         </property>
         <property name="username">
-            <value>tst</value>
+            <value>test</value>
         </property>
         <property name="password">
             <value>test</value>
